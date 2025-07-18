@@ -76,6 +76,14 @@ const App = () => (
             }
           />
           <Route
+            path="/anomaly"
+            element={
+              <Layout>
+                <Anomaly />
+              </Layout>
+            }
+          />
+          <Route
             path="*"
             element={
               <Layout>
