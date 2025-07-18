@@ -233,20 +233,53 @@ export function OTPVerification({
           </div>
 
           {/* OTP Input */}
-          <div className="space-y-2">
-            <Label htmlFor="otp">Enter OTP</Label>
-            <Input
-              id="otp"
-              type="text"
-              value={otp}
-              onChange={handleOtpChange}
-              onPaste={handleOtpPaste}
-              placeholder="000000"
-              className="text-center text-2xl font-mono tracking-widest"
-              maxLength={6}
-              disabled={isExpired || verificationResult?.success}
-              autoComplete="one-time-code"
-            />
+          <div className="space-y-4">
+            <Label className="text-center block">Enter 6-Digit OTP</Label>
+            <div className="flex justify-center space-x-2">
+              {[0, 1, 2, 3, 4, 5].map((index) => (
+                <Input
+                  key={index}
+                  type="text"
+                  value={otp[index] || ""}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, "");
+                    const newOtp = otp.split("");
+                    newOtp[index] = value;
+                    const updatedOtp = newOtp.join("").slice(0, 6);
+                    setOtp(updatedOtp);
+                    setVerificationResult(null);
+
+                    // Auto-focus next input
+                    if (value && index < 5) {
+                      const nextInput = document.querySelector(
+                        `#otp-${index + 1}`,
+                      ) as HTMLInputElement;
+                      if (nextInput) nextInput.focus();
+                    }
+
+                    // Auto-verify when complete
+                    if (updatedOtp.length === 6) {
+                      setTimeout(() => verifyOtp(), 500);
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    // Handle backspace
+                    if (e.key === "Backspace" && !otp[index] && index > 0) {
+                      const prevInput = document.querySelector(
+                        `#otp-${index - 1}`,
+                      ) as HTMLInputElement;
+                      if (prevInput) prevInput.focus();
+                    }
+                  }}
+                  onPaste={handleOtpPaste}
+                  id={`otp-${index}`}
+                  className="w-12 h-12 text-center text-xl font-mono border-2 border-security-300 rounded-lg focus:border-security-600 focus:ring-2 focus:ring-security-200"
+                  maxLength={1}
+                  disabled={isExpired || verificationResult?.success}
+                  autoComplete="one-time-code"
+                />
+              ))}
+            </div>
           </div>
 
           {/* Verification Result */}
