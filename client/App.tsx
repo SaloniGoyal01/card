@@ -85,6 +85,14 @@ const App = () => (
             }
           />
           <Route
+            path="/verify-transaction"
+            element={
+              <Layout>
+                <TransactionVerification />
+              </Layout>
+            }
+          />
+          <Route
             path="*"
             element={
               <Layout>
