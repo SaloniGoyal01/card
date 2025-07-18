@@ -71,7 +71,7 @@ export default function Landing() {
       <section className="relative overflow-hidden bg-gradient-to-br from-security-50 via-white to-security-100">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,76,231,0.05)_50%,transparent_75%)] bg-[length:20px_20px]" />
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Hero Content */}
@@ -121,7 +121,9 @@ export default function Landing() {
                     <div className="text-2xl lg:text-3xl font-bold text-security-800">
                       {stat.value}
                     </div>
-                    <div className="text-sm text-security-600">{stat.label}</div>
+                    <div className="text-sm text-security-600">
+                      {stat.label}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -140,13 +142,25 @@ export default function Landing() {
                       Active
                     </Badge>
                   </div>
-                  
+
                   {/* Mock Transaction */}
                   <div className="space-y-4">
                     {[
-                      { status: "safe", amount: "$45.99", location: "Local Store" },
-                      { status: "warning", amount: "$1,200.00", location: "Unknown Location" },
-                      { status: "safe", amount: "$12.50", location: "Coffee Shop" },
+                      {
+                        status: "safe",
+                        amount: "$45.99",
+                        location: "Local Store",
+                      },
+                      {
+                        status: "warning",
+                        amount: "$1,200.00",
+                        location: "Unknown Location",
+                      },
+                      {
+                        status: "safe",
+                        amount: "$12.50",
+                        location: "Coffee Shop",
+                      },
                     ].map((transaction, index) => (
                       <div
                         key={index}
@@ -168,21 +182,27 @@ export default function Landing() {
                           </div>
                         </div>
                         <Badge
-                          variant={transaction.status === "safe" ? "default" : "destructive"}
+                          variant={
+                            transaction.status === "safe"
+                              ? "default"
+                              : "destructive"
+                          }
                           className={
                             transaction.status === "safe"
                               ? "bg-success/10 text-success border-success/20"
                               : "bg-warning/10 text-warning border-warning/20"
                           }
                         >
-                          {transaction.status === "safe" ? "Verified" : "Review"}
+                          {transaction.status === "safe"
+                            ? "Verified"
+                            : "Review"}
                         </Badge>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
-              
+
               {/* Background Decorations */}
               <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-security-500 to-security-600 rounded-full opacity-20 blur-xl" />
               <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-br from-success to-success/50 rounded-full opacity-20 blur-xl" />
@@ -203,8 +223,9 @@ export default function Landing() {
               Comprehensive Fraud Prevention
             </h2>
             <p className="text-xl text-security-600 max-w-3xl mx-auto">
-              Multi-layered security system combining AI, behavioral analysis, and
-              real-time monitoring to protect against sophisticated fraud attempts.
+              Multi-layered security system combining AI, behavioral analysis,
+              and real-time monitoring to protect against sophisticated fraud
+              attempts.
             </p>
           </div>
 
@@ -218,7 +239,9 @@ export default function Landing() {
                 >
                   <CardContent className="p-8">
                     <div className="space-y-4">
-                      <div className={`w-12 h-12 rounded-lg bg-gradient-to-br from-security-100 to-security-200 flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                      <div
+                        className={`w-12 h-12 rounded-lg bg-gradient-to-br from-security-100 to-security-200 flex items-center justify-center group-hover:scale-110 transition-transform`}
+                      >
                         <Icon className={`h-6 w-6 ${feature.color}`} />
                       </div>
                       <h3 className="text-xl font-semibold text-security-800">
@@ -238,8 +261,10 @@ export default function Landing() {
 
       {/* CTA Section */}
       <section className="py-24 bg-gradient-to-r from-security-800 via-security-700 to-security-600 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="rgba(255,255,255,0.1)"%3E%3Cpath d="m0 2 2-2 2 2-2 2-2-2"%3E%3C/path%3E%3C/svg%3E')] opacity-20" />
-        
+        <div className="absolute inset-0 opacity-20">
+          <div className="w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:32px_32px]" />
+        </div>
+
         <div className="relative max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <div className="space-y-8">
             <h2 className="text-4xl lg:text-5xl font-bold text-white">
