@@ -94,6 +94,14 @@ const App = () => (
             }
           />
           <Route
+            path="/api-docs"
+            element={
+              <Layout>
+                <APIDocumentation />
+              </Layout>
+            }
+          />
+          <Route
             path="*"
             element={
               <Layout>
