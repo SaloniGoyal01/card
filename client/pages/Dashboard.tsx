@@ -193,6 +193,49 @@ export default function Dashboard() {
     }
   };
 
+  const handleOtpComplete = (success: boolean) => {
+    if (pendingTransaction) {
+      const updatedTransaction = {
+        ...pendingTransaction,
+        status: success
+          ? "safe"
+          : ("blocked" as "safe" | "flagged" | "blocked"),
+        anomalyReasons: success
+          ? []
+          : [...pendingTransaction.anomalyReasons, "OTP verification failed"],
+      };
+
+      setTransactions((prev) => [updatedTransaction, ...prev]);
+      setLastResult(updatedTransaction);
+    }
+
+    setShowOtpVerification(false);
+    setPendingTransaction(null);
+  };
+
+  const handleVoiceComplete = (success: boolean, confidence?: number) => {
+    if (pendingTransaction) {
+      const updatedTransaction = {
+        ...pendingTransaction,
+        status: success
+          ? "safe"
+          : ("blocked" as "safe" | "flagged" | "blocked"),
+        anomalyReasons: success
+          ? []
+          : [
+              ...pendingTransaction.anomalyReasons,
+              `Voice verification failed (${confidence?.toFixed(1)}% confidence)`,
+            ],
+      };
+
+      setTransactions((prev) => [updatedTransaction, ...prev]);
+      setLastResult(updatedTransaction);
+    }
+
+    setShowVoiceVerification(false);
+    setPendingTransaction(null);
+  };
+
   const getStatusBadge = (status: string, fraudScore: number) => {
     switch (status) {
       case "safe":
