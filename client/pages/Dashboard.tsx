@@ -498,7 +498,7 @@ export default function Dashboard() {
                 <Zap className="h-4 w-4 mr-2 text-security-600" />
                 Quick Security Tests
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-2">
                 <Button
                   onClick={() => {
                     const demoTransaction = {
@@ -520,8 +520,8 @@ export default function Dashboard() {
                   size="sm"
                   className="bg-warning hover:bg-warning/90 text-white shadow-sm"
                 >
-                  <CheckCircle2 className="mr-2 h-4 w-4" />
-                  Demo OTP
+                  <CheckCircle2 className="mr-1 h-3 w-3" />
+                  OTP
                 </Button>
                 <Button
                   onClick={() => {
@@ -548,8 +548,16 @@ export default function Dashboard() {
                   size="sm"
                   className="bg-danger hover:bg-danger/90 text-white shadow-sm"
                 >
-                  <Mic className="mr-2 h-4 w-4" />
-                  Demo Voice
+                  <Mic className="mr-1 h-3 w-3" />
+                  Voice
+                </Button>
+                <Button
+                  onClick={() => (window.location.href = "/verify-transaction")}
+                  size="sm"
+                  className="bg-security-600 hover:bg-security-700 text-white shadow-sm"
+                >
+                  <Shield className="mr-1 h-3 w-3" />
+                  Full Test
                 </Button>
               </div>
               <div className="text-xs text-security-600 mt-2 text-center">
