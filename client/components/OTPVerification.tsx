@@ -54,39 +54,86 @@ export function OTPVerification({
     }
   }, [timeLeft, isExpired]);
 
-  const generateNewOtp = () => {
-    const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedOtp(newOtp);
+  const generateNewOtp = async () => {
     setTimeLeft(300);
     setIsExpired(false);
     setVerificationResult(null);
     setAttempts(0);
     setOtp("");
 
-    // In a real app, this would be sent via SMS/Email
-    console.log("Generated OTP:", newOtp);
+    try {
+      // Call backend API to generate OTP
+      const response = await fetch("/api/otp/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: "user_demo_123",
+          transactionId: transactionId || "demo_transaction_" + Date.now(),
+          phoneNumber: "+1-555-123-4567",
+          email: "user@example.com",
+        }),
+      });
 
-    // Show OTP immediately for demo purposes with better UI
-    const notification = document.createElement("div");
-    notification.className =
-      "fixed top-4 right-4 bg-security-600 text-white p-4 rounded-lg shadow-lg z-50 animate-in slide-in-from-right";
-    notification.innerHTML = `
-      <div class="flex items-center space-x-2">
-        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-        <div>
-          <div class="font-semibold">OTP Sent!</div>
-          <div class="text-sm">Your code: <span class="font-mono text-lg">${newOtp}</span></div>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(notification);
+      const result = await response.json();
 
-    // Auto-remove notification after 10 seconds
-    setTimeout(() => {
-      if (notification.parentNode) {
-        notification.parentNode.removeChild(notification);
+      if (response.ok && result.success) {
+        // Backend will log the OTP to console
+        // For demo, we'll also show it in a notification
+        const notification = document.createElement("div");
+        notification.className =
+          "fixed top-4 right-4 bg-security-600 text-white p-4 rounded-lg shadow-lg z-50 animate-in slide-in-from-right";
+        notification.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <div>
+              <div class="font-semibold">OTP Generated!</div>
+              <div class="text-sm">${result.message}</div>
+              <div class="text-xs mt-1">Check console for OTP (demo)</div>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(notification);
+
+        // Auto-remove notification after 10 seconds
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 10000);
+      } else {
+        throw new Error(result.message || "Failed to generate OTP");
       }
-    }, 10000);
+    } catch (error) {
+      console.error("OTP generation API error:", error);
+
+      // Fallback to local generation
+      const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
+      setGeneratedOtp(newOtp);
+
+      console.log("Fallback Generated OTP:", newOtp);
+
+      const notification = document.createElement("div");
+      notification.className =
+        "fixed top-4 right-4 bg-warning text-white p-4 rounded-lg shadow-lg z-50";
+      notification.innerHTML = `
+        <div class="flex items-center space-x-2">
+          <div class="w-2 h-2 bg-yellow-200 rounded-full animate-pulse"></div>
+          <div>
+            <div class="font-semibold">OTP Generated (Fallback)</div>
+            <div class="text-sm">Your code: <span class="font-mono text-lg">${newOtp}</span></div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 10000);
+    }
   };
 
   const verifyOtp = async () => {
