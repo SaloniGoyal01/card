@@ -493,15 +493,16 @@ export default function Dashboard() {
             </Button>
 
             {/* Demo Buttons */}
-            <div className="mt-4 space-y-2">
-              <div className="text-sm font-medium text-security-700 mb-2">
-                Quick Demo:
+            <div className="mt-6 p-4 bg-gradient-to-r from-security-50 to-security-100 rounded-lg border border-security-200">
+              <div className="text-sm font-semibold text-security-800 mb-3 flex items-center">
+                <Zap className="h-4 w-4 mr-2 text-security-600" />
+                Quick Security Tests
               </div>
-              <div className="flex space-x-2">
+              <div className="grid grid-cols-2 gap-3">
                 <Button
                   onClick={() => {
                     const demoTransaction = {
-                      id: `demo_${Date.now()}`,
+                      id: `DEMO_OTP_${Date.now()}`,
                       amount: 1500,
                       location: "Unknown Location",
                       device: "Unknown Device",
@@ -517,15 +518,15 @@ export default function Dashboard() {
                     setShowOtpVerification(true);
                   }}
                   size="sm"
-                  variant="outline"
-                  className="flex-1 border-warning text-warning hover:bg-warning/10"
+                  className="bg-warning hover:bg-warning/90 text-white shadow-sm"
                 >
-                  Test OTP
+                  <CheckCircle2 className="mr-2 h-4 w-4" />
+                  Demo OTP
                 </Button>
                 <Button
                   onClick={() => {
                     const demoTransaction = {
-                      id: `demo_${Date.now()}`,
+                      id: `DEMO_VOICE_${Date.now()}`,
                       amount: 5000,
                       location: "International",
                       device: "Unknown Device",
@@ -545,11 +546,14 @@ export default function Dashboard() {
                     setShowVoiceVerification(true);
                   }}
                   size="sm"
-                  variant="outline"
-                  className="flex-1 border-danger text-danger hover:bg-danger/10"
+                  className="bg-danger hover:bg-danger/90 text-white shadow-sm"
                 >
-                  Test Voice
+                  <Mic className="mr-2 h-4 w-4" />
+                  Demo Voice
                 </Button>
+              </div>
+              <div className="text-xs text-security-600 mt-2 text-center">
+                Test the verification flows with simulated transactions
               </div>
             </div>
 
