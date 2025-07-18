@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { OTPVerification } from "@/components/OTPVerification";
+import { VoiceRecorder } from "@/components/VoiceRecorder";
 import {
   Shield,
   AlertTriangle,
@@ -24,6 +26,7 @@ import {
   Users,
   Zap,
   RefreshCw,
+  Mic,
 } from "lucide-react";
 
 interface Transaction {
