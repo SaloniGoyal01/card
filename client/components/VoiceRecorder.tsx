@@ -389,15 +389,37 @@ export function VoiceRecorder({
           <div className="space-y-4">
             {/* Recording Status */}
             {isRecording && (
-              <div className="text-center space-y-2">
-                <Badge className="bg-danger/10 text-danger border-danger/20">
-                  <div className="w-2 h-2 bg-danger rounded-full mr-2 animate-pulse" />
-                  Recording... {recordingTime}s
+              <div className="text-center space-y-3">
+                <Badge className="bg-danger/10 text-danger border-danger/20 text-lg px-4 py-2">
+                  <div className="w-3 h-3 bg-danger rounded-full mr-3 animate-pulse" />
+                  Recording... {recordingTime}s / 30s
                 </Badge>
-                <Progress
-                  value={(recordingTime / 30) * 100}
-                  className="w-full"
-                />
+                <div className="space-y-2">
+                  <Progress
+                    value={(recordingTime / 30) * 100}
+                    className="w-full h-3"
+                  />
+                  <div className="text-sm text-security-600">
+                    {recordingTime < 3
+                      ? "Keep speaking..."
+                      : recordingTime < 10
+                        ? "Good, continue..."
+                        : "Almost done!"}
+                  </div>
+                </div>
+                {/* Visual waveform simulation */}
+                <div className="flex justify-center space-x-1">
+                  {[...Array(8)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-1 bg-danger rounded-full animate-pulse"
+                      style={{
+                        height: `${Math.random() * 20 + 10}px`,
+                        animationDelay: `${i * 0.1}s`,
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
             )}
 
