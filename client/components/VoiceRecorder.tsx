@@ -64,26 +64,68 @@ export function VoiceRecorder({
 
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Request microphone permission
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          sampleRate: 44100,
+        },
+      });
       streamRef.current = stream;
 
-      const mediaRecorder = new MediaRecorder(stream);
+      // Check if MediaRecorder is supported
+      if (!MediaRecorder.isTypeSupported("audio/webm")) {
+        console.warn("audio/webm not supported, falling back to default");
+      }
+
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: MediaRecorder.isTypeSupported("audio/webm")
+          ? "audio/webm"
+          : undefined,
+      });
       mediaRecorderRef.current = mediaRecorder;
 
       const audioChunks: Blob[] = [];
 
       mediaRecorder.ondataavailable = (event) => {
-        audioChunks.push(event.data);
+        if (event.data.size > 0) {
+          audioChunks.push(event.data);
+        }
       };
 
       mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        const audioBlob = new Blob(audioChunks, {
+          type: mediaRecorder.mimeType || "audio/wav",
+        });
         setAudioBlob(audioBlob);
         const url = URL.createObjectURL(audioBlob);
         setAudioUrl(url);
+
+        // Show success notification
+        const notification = document.createElement("div");
+        notification.className =
+          "fixed top-4 right-4 bg-success text-white p-4 rounded-lg shadow-lg z-50";
+        notification.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <div class="w-2 h-2 bg-green-200 rounded-full animate-pulse"></div>
+            <div class="font-semibold">Recording Complete!</div>
+          </div>
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 3000);
       };
 
-      mediaRecorder.start();
+      mediaRecorder.onerror = (event) => {
+        console.error("MediaRecorder error:", event);
+        alert("Recording error occurred. Please try again.");
+      };
+
+      mediaRecorder.start(1000); // Collect data every second
       setIsRecording(true);
       setRecordingTime(0);
       setVerificationResult(null);
@@ -99,9 +141,48 @@ export function VoiceRecorder({
           return prev + 1;
         });
       }, 1000);
+
+      // Show recording started notification
+      const notification = document.createElement("div");
+      notification.className =
+        "fixed top-4 left-4 bg-danger text-white p-4 rounded-lg shadow-lg z-50";
+      notification.innerHTML = `
+        <div class="flex items-center space-x-2">
+          <div class="w-2 h-2 bg-red-200 rounded-full animate-pulse"></div>
+          <div class="font-semibold">Recording Started...</div>
+        </div>
+      `;
+      document.body.appendChild(notification);
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 3000);
     } catch (error) {
       console.error("Error accessing microphone:", error);
-      alert("Error accessing microphone. Please check permissions.");
+
+      let errorMessage = "Error accessing microphone. ";
+      if (error instanceof DOMException) {
+        switch (error.name) {
+          case "NotAllowedError":
+            errorMessage +=
+              "Please allow microphone permissions and try again.";
+            break;
+          case "NotFoundError":
+            errorMessage += "No microphone found. Please connect a microphone.";
+            break;
+          case "NotReadableError":
+            errorMessage +=
+              "Microphone is already in use by another application.";
+            break;
+          default:
+            errorMessage += "Please check your microphone settings.";
+        }
+      } else {
+        errorMessage += "Please check your microphone settings.";
+      }
+
+      alert(errorMessage);
     }
   };
 
