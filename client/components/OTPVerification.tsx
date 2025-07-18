@@ -153,6 +153,30 @@ export function OTPVerification({
     const value = e.target.value.replace(/\D/g, "").slice(0, 6);
     setOtp(value);
     setVerificationResult(null);
+
+    // Auto-verify when 6 digits are entered
+    if (value.length === 6) {
+      setTimeout(() => {
+        verifyOtp();
+      }, 500);
+    }
+  };
+
+  // Handle paste events for OTP
+  const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 6);
+    setOtp(pastedData);
+    setVerificationResult(null);
+
+    if (pastedData.length === 6) {
+      setTimeout(() => {
+        verifyOtp();
+      }, 500);
+    }
   };
 
   return (
