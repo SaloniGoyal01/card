@@ -46,7 +46,7 @@ export function Layout({ children }: LayoutProps) {
             </Link>
 
             {/* Navigation */}
-            <nav className="hidden md:flex space-x-1">
+            <nav className="hidden lg:flex space-x-1">
               {navigation.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -60,7 +60,28 @@ export function Layout({ children }: LayoutProps) {
                     }`}
                   >
                     <Icon className="h-4 w-4" />
-                    <span>{item.name}</span>
+                    <span className="hidden xl:inline">{item.name}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Mobile Navigation */}
+            <nav className="flex lg:hidden space-x-1">
+              {navigation.slice(0, 3).map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={`flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 ${
+                      isActive(item.href)
+                        ? "bg-security-600 text-white shadow-lg shadow-security-600/25"
+                        : "text-security-700 hover:bg-security-100 hover:text-security-900"
+                    }`}
+                    title={item.name}
+                  >
+                    <Icon className="h-4 w-4" />
                   </Link>
                 );
               })}
