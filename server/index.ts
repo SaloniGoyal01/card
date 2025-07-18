@@ -1,6 +1,15 @@
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import {
+  handleVoiceVerification,
+  getUserVoiceProfile,
+} from "./routes/voice-verification";
+import {
+  generateOTPHandler,
+  verifyOTPHandler,
+  getOTPStatus,
+} from "./routes/otp-verification";
 
 export function createServer() {
   const app = express();
