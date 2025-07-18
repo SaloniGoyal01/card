@@ -108,35 +108,81 @@ export function OTPVerification({
 
     setIsVerifying(true);
 
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    const isValid = otp === generatedOtp;
-    setAttempts((prev) => prev + 1);
-
-    if (isValid) {
-      setVerificationResult({
-        success: true,
-        message: "OTP verified successfully! Transaction approved.",
-      });
-      setTimeout(() => {
-        onVerificationComplete(true);
-      }, 1500);
-    } else {
-      setVerificationResult({
-        success: false,
-        message: `Invalid OTP. ${3 - attempts} attempts remaining.`,
+    try {
+      // Call backend API for OTP verification
+      const response = await fetch("/api/otp/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: "user_demo_123",
+          transactionId: transactionId || "demo_transaction_" + Date.now(),
+          otp: otp,
+        }),
       });
 
-      if (attempts >= 2) {
+      const result = await response.json();
+
+      if (response.ok && result.success) {
         setVerificationResult({
-          success: false,
+          success: true,
           message:
-            "Too many failed attempts. Transaction blocked for security.",
+            result.message ||
+            "OTP verified successfully! Transaction approved.",
         });
         setTimeout(() => {
-          onVerificationComplete(false);
-        }, 2000);
+          onVerificationComplete(true);
+        }, 1500);
+      } else {
+        setAttempts((prev) => prev + 1);
+        setVerificationResult({
+          success: false,
+          message: result.message || `Invalid OTP. Please try again.`,
+        });
+
+        if (attempts >= 2) {
+          setVerificationResult({
+            success: false,
+            message:
+              "Too many failed attempts. Transaction blocked for security.",
+          });
+          setTimeout(() => {
+            onVerificationComplete(false);
+          }, 2000);
+        }
+      }
+    } catch (error) {
+      console.error("OTP verification API error:", error);
+
+      // Fallback to local verification if API fails
+      const isValid = otp === generatedOtp;
+      setAttempts((prev) => prev + 1);
+
+      if (isValid) {
+        setVerificationResult({
+          success: true,
+          message: "OTP verified successfully! (Fallback verification)",
+        });
+        setTimeout(() => {
+          onVerificationComplete(true);
+        }, 1500);
+      } else {
+        setVerificationResult({
+          success: false,
+          message: `Invalid OTP. ${3 - attempts} attempts remaining.`,
+        });
+
+        if (attempts >= 2) {
+          setVerificationResult({
+            success: false,
+            message:
+              "Too many failed attempts. Transaction blocked for security.",
+          });
+          setTimeout(() => {
+            onVerificationComplete(false);
+          }, 2000);
+        }
       }
     }
 
