@@ -492,6 +492,67 @@ export default function Dashboard() {
               )}
             </Button>
 
+            {/* Demo Buttons */}
+            <div className="mt-4 space-y-2">
+              <div className="text-sm font-medium text-security-700 mb-2">
+                Quick Demo:
+              </div>
+              <div className="flex space-x-2">
+                <Button
+                  onClick={() => {
+                    const demoTransaction = {
+                      id: `demo_${Date.now()}`,
+                      amount: 1500,
+                      location: "Unknown Location",
+                      device: "Unknown Device",
+                      timestamp: new Date()
+                        .toISOString()
+                        .replace("T", " ")
+                        .split(".")[0],
+                      fraudScore: 0.75,
+                      status: "flagged" as const,
+                      anomalyReasons: ["High amount", "Unknown location"],
+                    };
+                    setPendingTransaction(demoTransaction);
+                    setShowOtpVerification(true);
+                  }}
+                  size="sm"
+                  variant="outline"
+                  className="flex-1 border-warning text-warning hover:bg-warning/10"
+                >
+                  Test OTP
+                </Button>
+                <Button
+                  onClick={() => {
+                    const demoTransaction = {
+                      id: `demo_${Date.now()}`,
+                      amount: 5000,
+                      location: "International",
+                      device: "Unknown Device",
+                      timestamp: new Date()
+                        .toISOString()
+                        .replace("T", " ")
+                        .split(".")[0],
+                      fraudScore: 0.92,
+                      status: "blocked" as const,
+                      anomalyReasons: [
+                        "Extremely high amount",
+                        "International",
+                        "Unknown device",
+                      ],
+                    };
+                    setPendingTransaction(demoTransaction);
+                    setShowVoiceVerification(true);
+                  }}
+                  size="sm"
+                  variant="outline"
+                  className="flex-1 border-danger text-danger hover:bg-danger/10"
+                >
+                  Test Voice
+                </Button>
+              </div>
+            </div>
+
             {lastResult && (
               <Alert
                 className={`border ${
