@@ -82,6 +82,13 @@ export default function Dashboard() {
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [lastResult, setLastResult] = useState<Transaction | null>(null);
+  const [showOtpVerification, setShowOtpVerification] = useState(false);
+  const [showVoiceVerification, setShowVoiceVerification] = useState(false);
+  const [pendingTransaction, setPendingTransaction] =
+    useState<Transaction | null>(null);
+  const [secretPhrase] = useState(
+    "My voice is my password verify one two three",
+  );
 
   const simulateTransaction = async () => {
     if (
