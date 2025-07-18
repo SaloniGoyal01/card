@@ -240,10 +240,12 @@ export function OTPVerification({
               type="text"
               value={otp}
               onChange={handleOtpChange}
+              onPaste={handleOtpPaste}
               placeholder="000000"
               className="text-center text-2xl font-mono tracking-widest"
               maxLength={6}
               disabled={isExpired || verificationResult?.success}
+              autoComplete="one-time-code"
             />
           </div>
 
