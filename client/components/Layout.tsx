@@ -1,6 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Shield, BarChart3, Users, Mic, Settings, LogOut } from "lucide-react";
+import {
+  Shield,
+  BarChart3,
+  Users,
+  Mic,
+  Settings,
+  LogOut,
+  TrendingUp,
+} from "lucide-react";
 
 interface LayoutProps {
   children: React.ReactNode;
