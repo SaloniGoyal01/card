@@ -15,6 +15,7 @@ export function Layout({ children }: LayoutProps) {
     { name: "Voice Verification", href: "/voice", icon: Mic },
     { name: "Admin Panel", href: "/admin", icon: Users },
     { name: "Analytics", href: "/analytics", icon: BarChart3 },
+    { name: "Anomaly Detection", href: "/anomaly", icon: TrendingUp },
   ];
 
   const isActive = (path: string) => location.pathname === path;
