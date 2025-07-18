@@ -39,6 +39,27 @@
 
     --radius: 0.5rem;
 
+    /* Security App Colors */
+    --security-50: 240 100% 99%;
+    --security-100: 240 100% 97%;
+    --security-200: 240 71% 91%;
+    --security-300: 240 71% 83%;
+    --security-400: 240 71% 73%;
+    --security-500: 240 71% 63%;
+    --security-600: 240 71% 53%;
+    --security-700: 240 71% 43%;
+    --security-800: 240 71% 33%;
+    --security-900: 240 71% 23%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 355 100% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 9%;
+
+    --danger: 0 84% 60%;
+    --danger-foreground: 210 40% 98%;
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -92,6 +113,18 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Dark mode security colors */
+    --security-50: 240 23% 9%;
+    --security-100: 240 23% 15%;
+    --security-200: 240 23% 21%;
+    --security-300: 240 23% 27%;
+    --security-400: 240 23% 33%;
+    --security-500: 240 23% 39%;
+    --security-600: 240 71% 53%;
+    --security-700: 240 71% 63%;
+    --security-800: 240 71% 73%;
+    --security-900: 240 71% 83%;
   }
 }
 
