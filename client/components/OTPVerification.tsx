@@ -61,16 +61,32 @@ export function OTPVerification({
     setIsExpired(false);
     setVerificationResult(null);
     setAttempts(0);
+    setOtp("");
 
     // In a real app, this would be sent via SMS/Email
     console.log("Generated OTP:", newOtp);
 
-    // Simulate sending OTP
+    // Show OTP immediately for demo purposes with better UI
+    const notification = document.createElement("div");
+    notification.className =
+      "fixed top-4 right-4 bg-security-600 text-white p-4 rounded-lg shadow-lg z-50 animate-in slide-in-from-right";
+    notification.innerHTML = `
+      <div class="flex items-center space-x-2">
+        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+        <div>
+          <div class="font-semibold">OTP Sent!</div>
+          <div class="text-sm">Your code: <span class="font-mono text-lg">${newOtp}</span></div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(notification);
+
+    // Auto-remove notification after 10 seconds
     setTimeout(() => {
-      alert(
-        `OTP sent to your registered device: ${newOtp} (Demo purposes only)`,
-      );
-    }, 500);
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 10000);
   };
 
   const verifyOtp = async () => {
