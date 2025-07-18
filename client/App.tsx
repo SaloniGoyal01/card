@@ -16,6 +16,7 @@ import Analytics from "./pages/Analytics";
 import Transactions from "./pages/Transactions";
 import Anomaly from "./pages/Anomaly";
 import TransactionVerification from "./pages/TransactionVerification";
+import APIDocumentation from "./pages/APIDocumentation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
