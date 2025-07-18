@@ -292,6 +292,61 @@ export default function Dashboard() {
     },
   ];
 
+  // Show verification modals
+  if (showOtpVerification && pendingTransaction) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-security-900 mb-2">
+            Transaction Flagged - OTP Required
+          </h1>
+          <p className="text-security-600">
+            This transaction requires additional verification for security.
+          </p>
+        </div>
+        <OTPVerification
+          transactionId={pendingTransaction.id}
+          amount={pendingTransaction.amount}
+          onVerificationComplete={handleOtpComplete}
+          onCancel={() => {
+            setShowOtpVerification(false);
+            setPendingTransaction(null);
+          }}
+        />
+      </div>
+    );
+  }
+
+  if (showVoiceVerification && pendingTransaction) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-security-900 mb-2">
+            High Risk Transaction - Voice Verification Required
+          </h1>
+          <p className="text-security-600">
+            This high-risk transaction requires voice biometric verification.
+          </p>
+          <Alert className="max-w-md mx-auto mt-4 border-danger/20 bg-danger/5">
+            <AlertTriangle className="h-4 w-4 text-danger" />
+            <AlertDescription className="text-danger">
+              Transaction: ${pendingTransaction.amount.toFixed(2)} -{" "}
+              {pendingTransaction.location}
+            </AlertDescription>
+          </Alert>
+        </div>
+        <VoiceRecorder
+          secretPhrase={secretPhrase}
+          onVerificationComplete={handleVoiceComplete}
+          onCancel={() => {
+            setShowVoiceVerification(false);
+            setPendingTransaction(null);
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Header */}
