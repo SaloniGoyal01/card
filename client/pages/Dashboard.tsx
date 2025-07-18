@@ -164,8 +164,18 @@ export default function Dashboard() {
       anomalyReasons,
     };
 
-    setTransactions((prev) => [transaction, ...prev]);
-    setLastResult(transaction);
+    // Handle verification flow for flagged/blocked transactions
+    if (status === "flagged") {
+      setPendingTransaction(transaction);
+      setShowOtpVerification(true);
+    } else if (status === "blocked") {
+      setPendingTransaction(transaction);
+      setShowVoiceVerification(true);
+    } else {
+      setTransactions((prev) => [transaction, ...prev]);
+      setLastResult(transaction);
+    }
+
     setNewTransaction({ amount: "", location: "", device: "" });
     setIsProcessing(false);
   };
