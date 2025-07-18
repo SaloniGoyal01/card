@@ -21,6 +21,7 @@ import {
   RefreshCw,
   Loader2,
   Ban,
+  Lock,
 } from "lucide-react";
 
 interface Transaction {
