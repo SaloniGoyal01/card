@@ -26,5 +26,14 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // Voice Verification API
+  app.post("/api/voice/verify", handleVoiceVerification);
+  app.get("/api/voice/profile/:userId", getUserVoiceProfile);
+
+  // OTP Generation & Verification API
+  app.post("/api/otp/generate", generateOTPHandler);
+  app.post("/api/otp/verify", verifyOTPHandler);
+  app.get("/api/otp/status/:userId/:transactionId", getOTPStatus);
+
   return app;
 }
